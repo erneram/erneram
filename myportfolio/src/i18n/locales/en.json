@@ -1,0 +1,80 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "skills": "Skills", 
+    "projects": "Projects",
+    "contact": "Contact"
+  },
+  "home": {
+    "welcome": "Welcome to my portfolio",
+    "subtitle": "Full Stack Developer & Software Engineer",
+    "description": "Passionate about creating innovative solutions and exceptional digital experiences",
+    "cta": "Get in touch",
+    "bibleVerse": {
+      "title": "Daily Verse",
+      "loading": "Loading verse...",
+      "error": "Could not load verse"
+    }
+  },
+  "about": {
+    "title": "About Me",
+    "subtitle": "Get to know me better",
+    "description": "I am a passionate full stack developer with experience in modern technologies and a constant desire to learn and grow professionally.",
+    "experience": "Experience",
+    "projects": "Projects Completed",
+    "technologies": "Technologies"
+  },
+  "skills": {
+    "title": "My Skills",
+    "subtitle": "Technologies I work with",
+    "languages": {
+      "title": "Programming Languages",
+      "description": "Languages I use for development"
+    },
+    "technologies": {
+      "title": "Technologies & Tools",
+      "description": "Frameworks, libraries and tools I work with"
+    }
+  },
+  "projects": {
+    "title": "My Projects",
+    "subtitle": "Some of my featured work",
+    "viewProject": "View Project",
+    "viewCode": "View Code",
+    "demo": "Live Demo",
+    "technologies": "Technologies used"
+  },
+  "contact": {
+    "title": "Contact Me",
+    "subtitle": "Let's work together",
+    "description": "Have a project in mind or want to collaborate? I'd love to hear from you!",
+    "form": {
+      "subject": "Subject / Consultation Title",
+      "subjectPlaceholder": "e.g., Project consultation, collaboration, technical question...",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "message": "Message",
+      "messagePlaceholder": "Tell me about your project or question...",
+      "send": "Send message",
+      "sending": "Sending...",
+      "success": "Message sent successfully! I'll contact you soon.",
+      "error": "Error sending message. Please try again.",
+      "required": "required"
+    }
+  },
+  "validation": {
+    "required": "{field} is required",
+    "email": "Please enter a valid email address",
+    "minLength": "{field} must be at least {min} characters",
+    "maxLength": "{field} must be less than {max} characters",
+    "invalidCharacters": "{field} can only contain letters and spaces"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Try again",
+    "close": "Close"
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "skills": "Habilidades",
+    "projects": "Proyectos", 
+    "contact": "Contacto"
+  },
+  "home": {
+    "welcome": "Bienvenido a mi portafolio",
+    "subtitle": "Desarrollador Full Stack e Ingeniero de Software",
+    "description": "Apasionado por crear soluciones innovadoras y experiencias digitales excepcionales",
+    "cta": "Contáctame",
+    "bibleVerse": {
+      "title": "Versículo del Día",
+      "loading": "Cargando versículo...",
+      "error": "No se pudo cargar el versículo"
+    }
+  },
+  "about": {
+    "title": "Acerca de Mí",
+    "subtitle": "Conoce más sobre mí",
+    "description": "Soy un desarrollador full stack apasionado con experiencia en tecnologías modernas y un deseo constante de aprender y crecer profesionalmente.",
+    "experience": "Experiencia",
+    "projects": "Proyectos Completados",
+    "technologies": "Tecnologías"
+  },
+  "skills": {
+    "title": "Mis Habilidades",
+    "subtitle": "Tecnologías con las que trabajo",
+    "languages": {
+      "title": "Lenguajes de Programación",
+      "description": "Lenguajes que uso para el desarrollo"
+    },
+    "technologies": {
+      "title": "Tecnologías y Herramientas",
+      "description": "Frameworks, librerías y herramientas con las que trabajo"
+    }
+  },
+  "projects": {
+    "title": "Mis Proyectos",
+    "subtitle": "Algunos de mis trabajos destacados",
+    "viewProject": "Ver Proyecto",
+    "viewCode": "Ver Código",
+    "demo": "Demo en Vivo",
+    "technologies": "Tecnologías utilizadas"
+  },
+  "contact": {
+    "title": "Contáctame",
+    "subtitle": "Trabajemos juntos",
+    "description": "¿Tienes un proyecto en mente o quieres colaborar? ¡Me encantaría saber de ti!",
+    "form": {
+      "subject": "Asunto / Título de la Consulta",
+      "subjectPlaceholder": "ej., Consulta de proyecto, colaboración, pregunta técnica...",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Correo electrónico",
+      "message": "Mensaje",
+      "messagePlaceholder": "Cuéntame sobre tu proyecto o pregunta...",
+      "send": "Enviar mensaje",
+      "sending": "Enviando...",
+      "success": "¡Mensaje enviado exitosamente! Te contactaré pronto.",
+      "error": "Error al enviar el mensaje. Por favor intenta nuevamente.",
+      "required": "requerido"
+    }
+  },
+  "validation": {
+    "required": "{field} es requerido",
+    "email": "Por favor ingresa un correo electrónico válido",
+    "minLength": "{field} debe tener al menos {min} caracteres",
+    "maxLength": "{field} debe tener menos de {max} caracteres",
+    "invalidCharacters": "{field} solo puede contener letras y espacios"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "retry": "Intentar de nuevo",
+    "close": "Cerrar"
+  }
+}

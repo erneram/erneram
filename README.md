@@ -1,6 +1,8 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=180&section=header&text=Ernesto%20Ascencio&fontSize=48&fontColor=ffffff&animation=fadeIn&fontAlignY=38" width="100%"/>
+<a href="https://git.io/typing-svg">
+  <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&weight=700&size=40&pause=1000&color=6C63FF&center=true&vCenter=true&width=600&height=70&lines=Ernesto+Ascencio" alt="Ernesto Ascencio" />
+</a>
 
 <a href="https://git.io/typing-svg">
   <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&pause=1000&color=6C63FF&center=true&vCenter=true&width=560&lines=Full-Stack+Developer;Software+Engineering+Student;Vue+%7C+TypeScript+%7C+Mobile;Always+building+something" alt="Typing SVG" />

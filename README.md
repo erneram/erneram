@@ -71,6 +71,27 @@ I enjoy building software and learning something new every day — off the clock
 
 ---
 
+### 🎬 Animation Options — Preview (pick one, delete the rest)
+
+**1. Snake eating your contributions** — needs the `snake.yml` workflow to run once after this is pushed (Actions tab → run manually if it doesn't auto-trigger).
+<div align="center">
+<img src="https://raw.githubusercontent.com/erneram/erneram/output/snake-dark.svg" alt="snake animation" />
+</div>
+
+**2. Metrics dashboard** (isometric commit calendar, languages, activity) — live demo instance, no setup:
+<div align="center">
+<img src="https://metrics.lecoq.io/erneram?template=classic&base=header,activity,community,repositories&config.timezone=America/Guatemala" alt="metrics" />
+</div>
+
+**3. Terminal-style typing** — same typing-SVG service, styled like a terminal window:
+<div align="center">
+<img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=18&duration=3000&pause=800&color=39FF14&background=0D1117&center=true&vCenter=true&width=560&height=120&lines=%24+whoami;ernesto-ascencio;%24+cat+role.txt;Full-Stack+Developer;%24+_" alt="terminal typing" />
+</div>
+
+**4. Spotify / WakaTime widgets** — need your own API keys (Spotify OAuth app + WakaTime account), can't preview without them. Say the word and I'll wire up the Action once you have the keys.
+
+---
+
 ### 📫 Contact Me
 
 <div align="center">

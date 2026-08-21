@@ -1,0 +1,147 @@
+{
+    // ── Git & Source Control ───────────────────────────────────────────────
+    "git.confirmSync": false,
+    "git.ignoreRebaseWarning": true,
+    "git.enableSmartCommit": true,
+    "javascript.updateImportsOnFileMove.enabled": "never",
+
+    // ── GitHub / Copilot / GitLens ─────────────────────────────────────────
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "gitlens.ai.model": "vscode",
+    "gitlens.ai.vscode.model": "copilot:gpt-4.1",
+    "githubPullRequests.pullBranch": "never",
+
+    // ── Explorer ───────────────────────────────────────────────────────────
+    "explorer.confirmDragAndDrop": false,
+    "explorer.confirmDelete": false,
+
+    // ── Files ──────────────────────────────────────────────────────────────
+    "files.associations": { "*.php": "php" },
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+
+    // ── Workbench / Theme ──────────────────────────────────────────────────
+    "workbench.colorTheme": "Tokyo Night",
+    "workbench.activityBar.location": "default",
+    "workbench.sideBar.location": "right",
+    "workbench.editor.showTabs": "multiple",
+    "workbench.editor.empty.hint": "hidden",
+    "workbench.statusBar.visible": true,
+    "workbench.startupEditor": "none",
+    "workbench.tips.enabled": false,
+    "workbench.tree.indent": 16,
+    "workbench.tree.renderIndentGuides": "always",
+    "workbench.list.horizontalScrolling": true,
+    "workbench.layoutControl.enabled": false,
+    "breadcrumbs.enabled": true,
+    "window.commandCenter": false,
+    "workbench.editorAssociations": {
+        "*.copilotmd": "vscode.markdown.preview.editor",
+        "*.docx": "default"
+    },
+
+    // ── Editor — Typography ────────────────────────────────────────────────
+    "editor.fontFamily": "'JetBrains Mono', 'Fira Code', Menlo, monospace",
+    "editor.fontSize": 13.5,
+    "editor.fontLigatures": true,
+    "editor.lineHeight": 1.9,
+    "editor.letterSpacing": 0.3,
+
+    // ── Editor — Cursor ────────────────────────────────────────────────────
+    "editor.cursorStyle": "line",
+    "editor.cursorBlinking": "smooth",
+    "editor.cursorSmoothCaretAnimation": "on",
+
+    // ── Editor — Layout & Clarity ──────────────────────────────────────────
+    "editor.insertSpaces": true,
+    "editor.padding.top": 16,
+    "editor.padding.bottom": 16,
+    "editor.minimap.enabled": false,
+    "editor.stickyScroll.enabled": false,
+    "editor.smoothScrolling": true,
+    "editor.renderLineHighlight": "gutter",
+    "editor.renderWhitespace": "none",
+    "editor.overviewRulerBorder": false,
+    "editor.overviewRulerLanes": 0,
+    "editor.hideCursorInOverviewRuler": true,
+    "editor.scrollbar.horizontal": "hidden",
+    "editor.scrollbar.vertical": "hidden",
+    "editor.guides.indentation": false,
+    "editor.guides.bracketPairs": false,
+    "editor.bracketPairColorization.enabled": true,
+
+    // ── Terminal ───────────────────────────────────────────────────────────
+    "terminal.integrated.shellIntegration.enabled": true,
+    "terminal.integrated.enableMultiLinePasteWarning": "never",
+    "terminal.integrated.drawBoldTextWithBrightColors": "true",
+    "terminal.integrated.tabs.enabled": false,
+    "terminal.integrated.minimumContrastRatio": 4.5,
+    "terminal.integrated.letterSpacing": 0.3,
+    "terminal.integrated.fontFamily": "'JetBrains Mono', monospace",
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "terminal.integrated.fontSize": 13,
+    "terminal.integrated.lineHeight": 1.4,
+    "terminal.integrated.cursorStyle": "block",
+    "terminal.integrated.cursorBlinking": true,
+    "terminal.integrated.smoothScrolling": true,
+
+    // ── Diff Editor ────────────────────────────────────────────────────────
+    "diffEditor.maxComputationTime": 0,
+    "diffEditor.ignoreTrimWhitespace": false,
+
+    // ── Remote / Ports ─────────────────────────────────────────────────────
+    "remote.autoForwardPorts": false,
+
+    // ── Chat / AI ──────────────────────────────────────────────────────────
+    "chat.viewSessions.orientation": "stacked",
+    "chat.viewSessions.showSessionStatus": false,
+    "chat.openEditorOnStartup": false,
+    "chat.showWelcomeView": false,
+    "chat.tools.terminal.autoApprove": {
+        //"/Users/hp/Documents/git_u/2026/ia/.venv/bin/python": true,
+        //"/Users/hp/Documents/git_u/2026/ia/.venv/bin/pip": true,
+        "rtk": true
+    },
+
+    // ── Updates & Extensions ───────────────────────────────────────────────
+    "update.showReleaseNotes": false,
+    "extensions.ignoreRecommendations": true,
+
+    // ── Markdown ───────────────────────────────────────────────────────────
+    "markdown-preview-enhanced.codeBlockTheme": "okaidia.css",
+
+    // ── PHP Formatter ──────────────────────────────────────────────────────
+    "[php]": {
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "editor.defaultFormatter": "kokororin.vscode-phpfmt",
+        "editor.formatOnSave": false
+    },
+    "phpfmt.exclude": ["AllmanStyleBraces"],
+    "phpfmt.passes": [
+        "AlignDoubleArrow",
+        "AlignPHPCode",
+        "SpaceAfterExclamationMark",
+        "AlignConstVisibilityEquals",
+        "AutoSemicolon",
+        "ConvertOpenTagWithEcho",
+        "AlignEquals",
+        "MergeNamespaceWithOpenTag",
+        "RemoveSemicolonAfterCurly",
+        "RestoreComments",
+        "ShortArray",
+        "ExtraCommaInArray",
+        "AlignDoubleSlashComments"
+    ],
+    "phpfmt.php_bin": "/opt/homebrew/bin/php",
+    "php.validate.executablePath": "/opt/homebrew/bin/php",
+
+    // ── JSON Formatter ─────────────────────────────────────────────────────
+    "[json]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true,
+        "editor.formatOnSave": true
+    }
+}

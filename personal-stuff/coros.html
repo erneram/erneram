@@ -1,0 +1,450 @@
+<title>Coros y Versículos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: setlist de concierto. Marcador fijo arriba, cronograma, y una sección por juego. */
+:root {
+  --bg: #f4f2fa;
+  --surface: #ffffff;
+  --fg: #1c1833;
+  --muted: #605b7a;
+  --line: #dcd8ea;
+  --team-a: #c4185f;
+  --team-b: #0b7f74;
+  --accent: #ffc83d;
+  --on-accent: #1c1833;
+  --bible: #7a4b12;
+  --bible-bg: #fbe9c8;
+  --song: #3b2a9a;
+  --song-bg: #e4defc;
+  --display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
+  --body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #13101f; --surface: #1d1930; --fg: #efecfa; --muted: #a29cc0; --line: #342e50;
+    --team-a: #ff6aa6; --team-b: #4fd6c6; --bible: #f3cf8e; --bible-bg: #3d2d12;
+    --song: #cbbfff; --song-bg: #2c2457; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #13101f; --surface: #1d1930; --fg: #efecfa; --muted: #a29cc0; --line: #342e50;
+  --team-a: #ff6aa6; --team-b: #4fd6c6; --bible: #f3cf8e; --bible-bg: #3d2d12;
+  --song: #cbbfff; --song-bg: #2c2457; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 400 16px/1.55 var(--body); padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 56px; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+main { max-width: 860px; margin: 0 auto; }
+h1, h2 { font-family: var(--display); text-wrap: balance; line-height: 1.05; margin: 0; }
+h1 { font-size: clamp(2.2rem, 7vw, 3.6rem); font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 800; letter-spacing: -0.01em; }
+h3 { font: 700 0.78rem/1.2 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--fg); outline-offset: 2px; }
+
+/* marcador */
+.score { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: var(--bg); padding-block: 10px; border-bottom: 1px solid var(--line); }
+.score-in { max-width: 860px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.team { background: var(--surface); border: 2px solid var(--c); border-radius: 12px; padding: 8px 10px; display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; align-items: center; min-width: 0; }
+.team.a { --c: var(--team-a); } .team.b { --c: var(--team-b); }
+.team input { grid-column: 1 / -1; min-width: 0; width: 100%; font: 700 0.8rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--c); background: transparent; border: 0; padding: 2px 0; }
+.team output { font: 800 2.2rem/1 var(--display); font-variant-numeric: tabular-nums; }
+.team .btns { display: flex; gap: 6px; }
+.team button { font: 700 1.1rem/1 var(--mono); width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer; }
+.team button.plus { background: var(--c); border-color: var(--c); color: var(--surface); }
+.team button:active { transform: scale(0.95); }
+
+header { padding-block: 32px 8px; }
+header p { color: var(--muted); max-width: 52ch; margin-top: 12px; }
+nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+nav a { text-decoration: none; font: 700 0.8rem var(--mono); letter-spacing: 0.04em; padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+nav a:hover { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+
+section { padding-top: 44px; scroll-margin-top: 90px; }
+.sec-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-bottom: 14px; }
+.sec-head .meta { font: 500 0.85rem var(--mono); color: var(--muted); }
+
+/* cronograma */
+.tl { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+.tl li { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: 4px 14px; padding: 14px 16px; border-top: 1px solid var(--line); }
+.tl li:first-child { border-top: 0; }
+.tl .t { font: 700 0.85rem/1.4 var(--mono); }
+.tl .t small { display: block; font-weight: 500; color: var(--muted); }
+.tl b { font-weight: 700; }
+.tl p { color: var(--muted); font-size: 0.93rem; }
+.bar { grid-column: 2; height: 6px; border-radius: 3px; background: var(--line); margin-top: 6px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--c, var(--fg)); }
+.k-game { --c: var(--team-a); } .k-break { --c: var(--muted); } .k-end { --c: var(--accent); }
+.tl .game b::before { content: "▶ "; color: var(--team-a); }
+
+/* reglas */
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.rules > div { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; min-width: 0; }
+.rules ul { margin: 0; padding-left: 1.1em; }
+.rules li + li { margin-top: 4px; }
+.note { background: var(--bible-bg); color: var(--fg); border-radius: 12px; padding: 12px 16px; font-size: 0.93rem; margin-bottom: 18px; }
+
+/* tablas */
+.wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+table { width: 100%; border-collapse: collapse; min-width: 440px; }
+th { text-align: left; font: 700 0.72rem var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 10px 14px; border-bottom: 1px solid var(--line); }
+td { padding: 10px 14px; border-top: 1px solid var(--line); vertical-align: top; }
+tr:first-child td { border-top: 0; }
+td.n { font: 700 0.85rem var(--mono); color: var(--muted); width: 2.5rem; }
+td small { display: block; color: var(--muted); }
+.who { font: 700 0.7rem var(--mono); }
+tr.a .n { color: var(--team-a); } tr.b .n { color: var(--team-b); }
+.lvl { font: 700 0.72rem var(--mono); text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+.lvl.f { color: var(--team-b); } .lvl.m { color: var(--bible); } .lvl.d { color: var(--team-a); }
+.cue { font-style: italic; }
+.say textarea { width: 100%; min-width: 14rem; min-height: 3.2rem; resize: vertical; font: 400 0.95rem/1.4 var(--body); color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; }
+.say .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 6px; }
+.mini { font: 700 0.78rem var(--mono); border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--fg); padding: 8px 12px; min-height: 36px; cursor: pointer; }
+a.mini { display: inline-flex; align-items: center; text-decoration: none; }
+.mini.go { background: var(--team-a); border-color: var(--team-a); color: var(--surface); }
+.todo { font: 700 0.7rem var(--mono); text-transform: uppercase; letter-spacing: 0.05em; color: var(--bible); background: var(--bible-bg); padding: 2px 8px; border-radius: 6px; }
+.tools select { font: 500 0.9rem var(--body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px; max-width: 100%; }
+.tools input[type=range] { width: 120px; }
+code { font: 500 0.85em var(--mono); background: var(--bg); padding: 1px 5px; border-radius: 4px; }
+.joker td { color: var(--muted); }
+
+/* juego 3 */
+.tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-bottom: 12px; }
+.tools label { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; cursor: pointer; min-height: 44px; }
+.tools input { width: 20px; height: 20px; accent-color: var(--team-a); }
+.tools span { color: var(--muted); font-size: 0.88rem; }
+.tag { display: inline-block; font: 700 0.7rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; }
+.tag.B { background: var(--bible-bg); color: var(--bible); }
+.tag.C { background: var(--song-bg); color: var(--song); }
+.tag.X { background: var(--line); color: var(--fg); }
+td.ans { min-width: 11rem; }
+td.ans .src { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
+td.ans button { font: 700 0.78rem var(--mono); border: 1px dashed var(--muted); border-radius: 8px; background: transparent; color: var(--muted); padding: 8px 10px; min-height: 36px; cursor: pointer; }
+td.ans .rev { display: none; }
+.show td.ans .rev, tr.open td.ans .rev { display: block; }
+.show td.ans button, tr.open td.ans button { display: none; }
+.theme { font: 500 0.8rem var(--mono); color: var(--muted); display: block; }
+
+footer { padding-top: 40px; color: var(--muted); font-size: 0.88rem; }
+@media (max-width: 480px) {
+  .tl li { grid-template-columns: minmax(0, 1fr); }
+  .bar { grid-column: 1; }
+  .team output { font-size: 1.8rem; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="score" role="group" aria-label="Marcador">
+  <div class="score-in">
+    <div class="team a"><input id="nameA" value="Equipo A" aria-label="Nombre del equipo A" maxlength="24"><output id="sA">0</output>
+      <div class="btns"><button data-t="A" data-d="-1" aria-label="Restar punto al equipo A">−</button><button class="plus" data-t="A" data-d="1" aria-label="Sumar punto al equipo A">+</button></div></div>
+    <div class="team b"><input id="nameB" value="Equipo B" aria-label="Nombre del equipo B" maxlength="24"><output id="sB">0</output>
+      <div class="btns"><button data-t="B" data-d="-1" aria-label="Restar punto al equipo B">−</button><button class="plus" data-t="B" data-d="1" aria-label="Sumar punto al equipo B">+</button></div></div>
+  </div>
+</div>
+
+<main>
+<header>
+  <h1>Coros y Versículos</h1>
+  <p>Tres juegos para dos equipos: adivinar una canción por la letra que lee una voz, terminar la canción y decidir si una frase es de la Biblia o de una canción. Duración total: 2 horas y 25 minutos.</p>
+  <nav aria-label="Secciones">
+    <a href="#cronograma">Cronograma</a><a href="#juego1">1 · Adivina el coro</a><a href="#juego2">2 · Termina la canción</a><a href="#juego3">3 · ¿Biblia o canción?</a>
+  </nav>
+</header>
+
+<section id="cronograma">
+  <div class="sec-head"><h2>Cronograma</h2><span class="meta">145 min</span></div>
+  <ol class="tl" id="tl"></ol>
+</section>
+
+<section id="juego1">
+  <div class="sec-head"><h2>1 · Adivina el coro</h2><span class="meta">40 min · 35 canciones</span></div>
+  <div class="rules">
+    <div><h3>Cómo se juega</h3><ul>
+      <li>Una voz sintética lee la parte famosa de la letra. No suena la música.</li>
+      <li>El primer equipo que levanta la mano o toca la campana responde.</li>
+      <li>Si falla, el otro equipo puede robar la canción.</li></ul></div>
+    <div><h3>Puntos</h3><ul>
+      <li>Canción correcta: 1 punto.</li>
+      <li>Artista correcto: +1 punto.</li>
+      <li>Si nadie acierta, el presentador lee la línea de nuevo, más lento, y el punto vale la mitad.</li></ul></div>
+  </div>
+  <p class="note">Escribe en cada fila 2 o 3 líneas seguidas del coro, o del verso más conocido, sin nombrar la canción. Más texto y menos pistas hacen el juego más difícil. No incluí letras largas porque no puedo confirmarlas palabra por palabra: pégalas desde la letra oficial. Lo que escribas se guarda en este navegador. Para audios fijos, copia el texto y pásalo a tu lector de voz (en Mac: <code>say -v Paulina -o coro01.aiff "texto"</code>), o usa el botón Voz de esta página con la voz en español de tu computadora.</p>
+  <div class="tools">
+    <label for="voice">Voz <select id="voice"></select></label>
+    <label for="rate">Velocidad <input type="range" id="rate" min="0.6" max="1.2" step="0.05" value="0.9"></label>
+    <button type="button" id="test" class="mini go">Probar voz</button>
+    <button type="button" id="stop" class="mini">Detener</button>
+    <span id="cnt"></span>
+    <span id="vmsg" role="status"></span>
+  </div>
+  <div class="wrap"><table>
+    <thead><tr><th>#</th><th>Respuesta</th><th>Texto para la voz</th></tr></thead>
+    <tbody id="g1"></tbody>
+  </table></div>
+</section>
+
+<section id="juego2">
+  <div class="sec-head"><h2>2 · Termina la canción</h2><span class="meta">45 min · 30 canciones</span></div>
+  <div class="rules">
+    <div><h3>Cómo se juega</h3><ul>
+      <li>Los equipos juegan por turnos. Reproduces la canción original en tu computadora y la pausas en el punto indicado.</li>
+      <li>El equipo tiene 10 segundos para cantar la línea siguiente, todos juntos.</li>
+      <li>Ensaya antes y anota el segundo exacto de cada pausa. El presentador confirma la letra en el celular.</li></ul></div>
+    <div><h3>Puntos</h3><ul>
+      <li>Línea completa y bien cantada: 1 punto en las fáciles y 2 en las difíciles.</li>
+      <li>Cantan además la línea que sigue: +1 punto.</li>
+      <li>Si el equipo falla, el otro puede robar el punto cantando la misma línea.</li></ul></div>
+  </div>
+  <div class="wrap"><table>
+    <thead><tr><th>#</th><th>Canción</th><th>Nivel</th><th>Pausar</th></tr></thead>
+    <tbody id="g2"></tbody>
+  </table></div>
+</section>
+
+<section id="juego3">
+  <div class="sec-head"><h2>3 · ¿Biblia o canción?</h2><span class="meta">25 min · 40 frases (lee las que alcances) + desempate</span></div>
+  <div class="rules">
+    <div><h3>Cómo se juega</h3><ul>
+      <li>El presentador lee la frase. El equipo de turno dice “Biblia” o “Canción” en 5 segundos.</li>
+      <li>Los turnos alternan. Las filas con número rosa son del equipo A y las verdes del equipo B.</li></ul></div>
+    <div><h3>Puntos</h3><ul>
+      <li>Acierta el tipo: 1 punto.</li>
+      <li>Acierta además el libro o la canción: +1 punto.</li>
+      <li>Si falla, el otro equipo puede robar con una respuesta.</li></ul></div>
+  </div>
+  <div class="tools">
+    <label for="showAll"><input type="checkbox" id="showAll"> Mostrar respuestas</label>
+    <span>Apagado por defecto para proyectar. Toca “Ver” para revelar una sola fila.</span>
+  </div>
+  <div class="wrap"><table>
+    <thead><tr><th>#</th><th>Frase</th><th>Respuesta</th></tr></thead>
+    <tbody id="g3"></tbody>
+  </table></div>
+
+  <h3 style="margin-top:28px">Desempate · ¿Está en la Biblia? Sí o no</h3>
+  <div class="wrap"><table>
+    <thead><tr><th>#</th><th>Frase</th><th>Respuesta</th></tr></thead>
+    <tbody id="g4"></tbody>
+  </table></div>
+</section>
+
+<footer>Las frases y letras citadas son fragmentos cortos para el juego. Verifica cada cita en tu Biblia y cada letra en la canción original antes del evento.</footer>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const store = (fn) => { try { return fn(); } catch (_) {} };
+
+/* cronograma: [inicio, minutos, título, detalle, tipo] */
+const plan = [
+  ["0:00", 10, "Bienvenida y equipos", "Reparte a las personas en dos grupos (por color de papelito o por cumpleaños par/impar). Cada equipo elige nombre y un grito de guerra de 5 segundos.", "k-start"],
+  ["0:10", 40, "Juego 1 · Adivina el coro", "2 min de reglas, 35 audios con la voz leyendo el coro, un minuto por canción, marcador al cierre.", "k-game game"],
+  ["0:50", 10, "Descanso", "Agua, snacks y cambio de música. Prepara la siguiente lista de canciones en la computadora.", "k-break"],
+  ["1:00", 45, "Juego 2 · Termina la canción", "2 min de reglas, 30 canciones de minuto y medio cada una.", "k-game game"],
+  ["1:45", 5, "Pausa corta", "Estirarse, ir al baño y leer el marcador.", "k-break"],
+  ["1:50", 25, "Juego 3 · ¿Biblia o canción?", "1 min de reglas, hasta 40 frases de ~30 s cada una.", "k-game game"],
+  ["2:15", 5, "Desempate", "Solo si hay empate: 4 frases con Sí o No (¿está en la Biblia?).", "k-end"],
+  ["2:20", 5, "Premiación y cierre", "Se anuncia el equipo ganador. Foto grupal.", "k-end"],
+];
+const end = (s, m) => { const [h, mi] = s.split(":").map(Number); const t = h * 60 + mi + m; return `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`; };
+$("tl").innerHTML = plan.map(([s, m, t, d, k]) => `
+  <li class="${k}"><div class="t">${s}<small>${m} min</small></div>
+  <div><b>${t}</b><p>${d}</p></div>
+  <div class="bar" aria-hidden="true"><i style="width:${Math.round(m / 45 * 100)}%"></i></div></li>`).join("");
+
+/* juego 1: [canción, artista] */
+const g1 = [
+  ["Hasta que me olvides", "Luis Miguel"],
+  ["Un siglo sin ti", "Chayanne"],
+  ["El amar y el querer", "José José"],
+  ["Rayando el sol", "Maná"],
+  ["Abrázame muy fuerte", "Juan Gabriel"],
+  ["Mientes", "Camila"],
+  ["Torero", "Chayanne"],
+  ["Si no te hubieras ido", "Marco Antonio Solís"],
+  ["Noviembre sin ti", "Reik"],
+  ["A Dios le pido", "Juanes"],
+  ["No me doy por vencido", "Luis Fonsi"],
+  ["Ave María", "David Bisbal"],
+  ["Besos en guerra", "Morat"],
+  ["Ahora te puedes marchar", "Luis Miguel"],
+  ["La bilirrubina", "Juan Luis Guerra"],
+  ["Pelo suelto", "Gloria Trevi"],
+  ["La chica del bikini azul", "Luis Miguel"],
+  ["Señora de las cuatro décadas", "Ricardo Arjona"],
+  ["La incondicional", "Luis Miguel"],
+  ["Azul", "Cristian Castro"],
+  ["Gavilán o paloma", "José José"],
+  ["Como la flor", "Selena"],
+  ["Ángel", "Cristian Castro"],
+  ["Tú de qué vas", "Franco De Vita"],
+  ["Labios compartidos", "Maná"],
+  ["Mentirosa", "Elefante"],
+  ["Rosa pastel", "Belanova"],
+  ["Un millón de primaveras", "Vicente Fernández"],
+  ["Despacito", "Luis Fonsi"],
+  ["La chica de humo", "Emmanuel"],
+  ["Cuando nadie ve", "Morat"],
+  ["Vivir mi vida", "Marc Anthony"],
+  ["Burbujas de amor", "Juan Luis Guerra"],
+  ["Cuando me enamoro", "Enrique Iglesias"],
+  ["La gata bajo la lluvia", "Rocío Dúrcal"],
+];
+const LY = {"Un siglo sin ti": "Abriendo las puertas de mi corazón, para cuando decidas volver.\nPorque nunca habrá nadie que pueda llenar el vacío que dejaste en mí.\nHas cambiado mi vida, me has hecho crecer.\nEs que no soy el mismo de ayer.", "Hasta que me olvides": "Voy a amarte tanto, tanto.\nComo fuego entre tus brazos.\nY me rompa en mil pedazos.\nContinuar mi gran teatro.", "Rayando el sol": "Es más fácil llegar al sol que a tu corazón.\nMe muero por ti, viviendo sin ti.\nY no aguanto, me duele tanto estar así.", "Mientes": "Me haces daño y luego te arrepientes.\nYa no tiene caso que lo intentes.\nNo me quedan ganas de sentir.\nLlegas, cuando estoy a punto de olvidarte.", "Torero": "Poner el alma en el ruedo.\nNo importa lo que se venga.\nPa' que sepas que te quiero.\nMe juego la vida por ti.", "Si no te hubieras ido": "No hay nada más difícil que vivir sin ti.\nSufriendo en la espera de verte llegar.\nEl frío de mi cuerpo pregunta por ti, y no sé dónde estás.", "Noviembre sin ti": "Noviembre sin ti es sentir que la lluvia me dice llorando que todo acabó.\nNoviembre sin ti es pedirle a la luna que brille en la noche de mi corazón.", "No me doy por vencido": "Yo quiero un mundo contigo.\nJuro que vale la pena esperar, y esperar, y esperar un suspiro.\nUna señal del destino.\nNo me canso, no me rindo.", "Besos en guerra": "Siempre he sabido que tus besos matan.\nQue tus promesas riman con dolor.\nQue eres experta en robarle latidos a mi corazón.", "La bilirrubina": "Cuando te miro y no me miras.\nY no lo quita la aspirina.\nNo, ni un suero con penicilina.\nEs un amor que contamina.", "Pelo suelto": "Voy a ser siempre como quiero.\nVoy a olvidarme de complejos, a nadie voy a tener miedo.\nAunque me tachen de indecente, aunque hable mal de mí la gente.", "Señora de las cuatro décadas": "No le quite años a su vida.\nPóngale vida a los años, que es mejor.\nNótelo así, de repente, que es usted amalgama perfecta entre experiencia y juventud.", "Azul": "Y es que este amor es azul como el mar.\nComo de tu mirada nació mi ilusión.\nAzul como una lágrima cuando hay perdón.\nTan puro y tan azul que embriagó el corazón.", "Gavilán o paloma": "Amiga, hay que ver cómo es el amor, que vuelve a quien lo toma.\nPobre tonto, ingenuo charlatán.\nQue fui paloma por querer ser gavilán.", "Como la flor": "Como la flor, con tanto amor, me diste tú, se marchitó.\nMe marcho hoy, yo sé perder.\nPero, ay, ay, ¡cómo me duele!", "Abrázame muy fuerte": "Abrázame que el tiempo pasa y él nunca perdona.\nHa hecho estragos en mi gente como en mi persona.\nAbrázame que el tiempo es malo y muy cruel amigo.\nAbrázame que el tiempo es oro si tú estás conmigo.", "La chica de humo": "Y yo qué sé dónde va, dónde vive.\nY todo está mal, y siempre es igual.\nY yo qué sé, yo no soy detective.\nLa paso fatal.", "Cuando nadie ve": "Si me preguntan por ti, diré que es mentira.\nQue toda una vida he soñado contigo.\nTe miro, me miras, y el mundo no gira.\nTodo parece mentira.", "La gata bajo la lluvia": "Ya lo ves, la vida es así.\nTú te vas, y yo me quedo aquí.\nLloverá, y ya no seré tuya.\nSeré la gata bajo la lluvia, y maullaré por ti.", "El amar y el querer": "El que ama pretende servir\nEl que ama su vida la da\nY el que quiere pretende vivir\nY nunca sufrir, y nunca sufrir", "A Dios le pido": "Que mi madre no se muera\nY que mi padre me recuerde\nQue te quedes a mi lado\nY que más nunca te me vayas mi vida", "Ave María": "Dime tan solo una palabra\nQue me devuelva la vida\nY se me quede en el alma\nPorque sin ti no tengo nada", "Ahora te puedes marchar": "Si tú supieras lo que yo sufrí por ti\nTeniendo que olvidarte sin saber por qué\nY ahora me llamas, me quieres ver\nMe juras que has cambiado y piensas en volver", "La chica del bikini azul": "Sólo y triste bajo el sol\nEn la playa busco amor\nDebe haber un lugar para mí\nGentes vienen, gentes van", "La incondicional": "Tú, mi eternamente tú\nUn hotel, tu cuerpo y un adiós\nTú, mi oculta amiga, tú\nUn golpe de pasión", "Ángel": "Quisiera amarte hasta el amanecer\nBesarte lentamente\nY perderme por tu piel\nEncontrarme con tus labios\nEn un beso sin final", "Tú de qué vas": "Si necesito de tus besos pa' que pueda respirar\nY de tus ojos que van regalando vida\nY que me dejan sin salida\n¿Y para qué quiero salir?", "Labios compartidos": "Amigos con derecho y sin derecho de tenerte siempre\nY siempre tengo que esperar paciente\nEl pedazo que me toca de ti", "Mentirosa": "Si la luna no es de queso\nNi las nubes de algodón\nPara qué seguir con cuentos\nCon amores de ficción", "Rosa pastel": "Sí, yo quería ser esa mujer\nLa madre de tus hijos\nY juntos caminar hacia el altar\nDirecto hacia la muerte", "Un millón de primaveras": "Te molesta si te hablo de mi amor\nY me pides por favor olvide el tema\nY que cambie la letra de mis canciones\nY tu nombre quite ya de aquel poema", "Despacito": "Sí, sabes que ya llevo un rato mirándote\nTengo que bailar contigo hoy\nVi que tu mirada ya estaba llamándome\nMuéstrame el camino que yo voy", "Vivir mi vida": "A veces llega la lluvia\nPara limpiar las heridas\nA veces solo una gota\nPuede vencer la sequía", "Burbujas de amor": "Tengo un corazón\nMutilado de esperanza y de razón\nTengo un corazón\nQue madruga adonde quiera", "Cuando me enamoro": "Si pudiera bajarte una estrella del cielo\nLo haría sin pensarlo dos veces\nPorque te quiero, y hasta un lucero\nY si tuviera el naufragio de un sentimiento"};
+const KEY = "cv-g1b-";
+$("g1").innerHTML = g1.map(([s, a], i) => `<tr class="${i % 2 ? "b" : "a"}"><td class="n">${i + 1}</td>
+  <td><b>${s}</b><small>${a}</small><span class="todo" id="todo${i}">Completar</span></td>
+  <td class="say"><textarea id="t${i}" rows="3" placeholder="Pega 2 o 3 líneas del coro, sin nombrar la canción" aria-label="Texto para la voz, canción ${i + 1}">${store(() => localStorage.getItem(KEY + i)) ?? LY[s] ?? ""}</textarea>
+    <div class="row"><button type="button" class="mini go" data-say="${i}">▶ Voz</button><button type="button" class="mini" data-copy="${i}">Copiar</button><a class="mini" target="_blank" rel="noopener" href="https://www.google.com/search?q=${encodeURIComponent("letra " + s + " " + a)}">Buscar letra</a></div></td></tr>`).join("");
+function ready() {
+  let n = 0;
+  g1.forEach((_, i) => { const ok = $("t" + i).value.trim() !== ""; $("todo" + i).hidden = ok; n += ok; });
+  $("cnt").textContent = `${n} de ${g1.length} textos listos`;
+}
+$("g1").addEventListener("input", (e) => { if (e.target.id[0] === "t") store(() => localStorage.setItem(KEY + e.target.id.slice(1), e.target.value)); ready(); });
+ready();
+
+/* juego 2: [canción, artista, f|d] intercaladas fácil/difícil */
+const g2 = [
+  ["Cuando calienta el sol", "Luis Miguel", "f"], ["Entrégate", "Luis Miguel", "d"],
+  ["La media vuelta", "Luis Miguel", "f"], ["Culpable o no", "Luis Miguel", "d"],
+  ["La incondicional", "Luis Miguel", "f"], ["Si me dejas ahora", "José José", "d"],
+  ["Almohada", "José José", "f"], ["Lo dudo", "José José", "d"],
+  ["Querida", "Juan Gabriel", "f"], ["Debo hacerlo", "Juan Gabriel", "d"],
+  ["Amor eterno", "Juan Gabriel", "f"], ["No discutamos", "Juan Gabriel", "d"],
+  ["No tengo dinero", "Juan Gabriel", "f"], ["La diferencia", "Juan Gabriel", "d"],
+  ["Dejaría todo", "Chayanne", "f"], ["Tiempo de vals", "Chayanne", "d"],
+  ["Niña", "Reik", "f"], ["Atado a tu amor", "Chayanne", "d"],
+  ["Creo en ti", "Reik", "f"], ["Peligro", "Reik", "d"],
+  ["Despacito", "Luis Fonsi", "f"], ["Me niego", "Reik ft. Ozuna y Wisin", "d"],
+  ["Cómo te atreves", "Morat", "f"], ["Corazón en la maleta", "Luis Fonsi", "d"],
+  ["Ojalá que llueva café", "Juan Luis Guerra", "f"], ["No se va", "Morat", "d"],
+  ["Burbujas de amor", "Juan Luis Guerra", "f"], ["Rosalía", "Juan Luis Guerra", "d"],
+  ["Bachata rosa", "Juan Luis Guerra", "f"], ["El Niágara en bicicleta", "Juan Luis Guerra", "d"],
+];
+const lv = { f: "Fácil", d: "Difícil" };
+$("g2").innerHTML = g2.map(([s, a, l], i) => `<tr class="${i % 2 ? "b" : "a"}"><td class="n">${i + 1}</td>
+  <td><b>${s}</b><small>${a}</small></td><td><span class="lvl ${l}">${lv[l]}</span></td>
+  <td class="cue">${l === "f" ? "Al terminar la primera línea del coro" : "A la mitad del primer verso, antes del coro"}</td></tr>`).join("");
+
+/* voz */
+const synth = window.speechSynthesis;
+let voices = [];
+function loadVoices() {
+  if (!synth) { $("voice").innerHTML = "<option>Este navegador no tiene voz</option>"; return; }
+  voices = synth.getVoices().filter((v) => /^es/i.test(v.lang));
+  $("voice").innerHTML = voices.length ? voices.map((v, i) => `<option value="${i}">${v.name} (${v.lang})</option>`).join("") : "<option>Sin voces en español</option>";
+}
+loadVoices();
+if (synth) synth.onvoiceschanged = loadVoices;
+const msg = (t) => { $("vmsg").textContent = t; };
+function say(text) {
+  if (!synth) return msg("Este navegador no tiene síntesis de voz. Copia el texto y usa otro lector.");
+  if (!text.trim()) return msg("Esa fila está vacía. Pega primero el texto del coro.");
+  synth.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  const v = voices[$("voice").value];
+  if (v) { u.voice = v; u.lang = v.lang; } else u.lang = "es-MX";
+  u.rate = Number($("rate").value);
+  u.onstart = () => msg("Leyendo…");
+  u.onend = () => msg("");
+  u.onerror = (e) => msg("La voz falló (" + e.error + "). Si dice not-allowed, el visor bloquea el audio: copia el texto y usa un lector externo.");
+  msg("Enviando a la voz…");
+  synth.speak(u);
+  setTimeout(() => { if (!synth.speaking && $("vmsg").textContent === "Enviando a la voz…") msg("No sonó nada. Este visor probablemente bloquea la voz: copia el texto y usa un lector externo."); }, 1500);
+}
+$("stop").addEventListener("click", () => { if (synth) synth.cancel(); msg(""); });
+$("test").addEventListener("click", () => say("Probando la voz en español. Uno, dos, tres."));
+$("g1").addEventListener("click", (e) => {
+  const sb = e.target.closest("[data-say]"), cb = e.target.closest("[data-copy]");
+  if (sb) say($("t" + sb.dataset.say).value);
+  if (cb) {
+    const ta = $("t" + cb.dataset.copy);
+    navigator.clipboard.writeText(ta.value).then(() => { cb.textContent = "Copiado"; }, () => { ta.select(); cb.textContent = "Selecciona y copia"; });
+    setTimeout(() => { cb.textContent = "Copiar"; }, 1500);
+  }
+});
+
+/* juego 3: [tema, frase, B|C, fuente] */
+const g3 = [
+["Las nubes grises también forman parte del paisaje.", "C", "Fuiste tú · Ricardo Arjona y Gaby Moreno"],
+  ["La noche me taladra los huesos; el dolor que me corroe no tiene fin.", "B", "Job 30:17 · NVI"],
+  ["Amada mía, desde que me miraste mi corazón te pertenece. Es tuyo desde que lo envolviste entre los hilos de tu collar.", "B", "Cantares 4:9 · TLA"],
+  ["Que salvarte a ti mil veces puede ser mi salvación.", "C", "Héroe · Enrique Iglesias"],
+  ["No hubo promesas ni juramentos, nada de nada.", "C", "La incondicional · Luis Miguel"],
+  ["Al oír la voz de mi amado, sentí que me moría. Le abrí la puerta, pero él se había marchado; ¡ya no estaba allí!", "B", "Cantares 5:6 · TLA (fragmento)"],
+  ["Dar solamente aquello que te sobra nunca fue compartir.", "C", "Corazón partío · Alejandro Sanz"],
+  ["Me siento débil, completamente deshecho; mi corazón gime angustiado.", "B", "Salmos 38:8 · NVI"],
+  ["¡Que ponga él su brazo izquierdo debajo de mi cabeza! ¡Que me apriete contra su cuerpo con el brazo derecho!", "B", "Cantares 2:6 · TLA"],
+  ["Y voy a rodar como lágrima entre la llovizna.", "C", "Hasta que me olvides · Luis Miguel"],
+  ["La mucha risa causa dolor; hay alegrías que acaban en tristeza.", "B", "Proverbios 14:13 · TLA"],
+  ["Voy a curarte el alma en duelo.", "C", "Día de enero · Shakira"],
+  ["No encuentro forma alguna de olvidarte.", "C", "Inevitable · Shakira"],
+  ["¡Ay, amado mío, cómo deseo que me beses! Prefiero tus caricias, más que el vino.", "B", "Cantares 1:2 · TLA"],
+  ["Date cuenta de que el tiempo es cruel.", "C", "Querida · Juan Gabriel"],
+  ["¡No hay mares que puedan apagarlo, ni ríos que puedan extinguirlo!", "B", "Cantares 8:7 · TLA (fragmento)"],
+  ["¡Denme a comer uvas! ¡Denme a comer manzanas! ¡Ayúdenme a recobrar las fuerzas, que me estoy muriendo de amor!", "B", "Cantares 2:5 · TLA"],
+  ["Yo sabía de alegrías, la belleza de la vida.", "C", "Hasta que te conocí · Juan Gabriel"],
+  ["Y en un silencio, tu mirada dice mil palabras.", "C", "Bailando · Enrique Iglesias, Descemer Bueno y Gente de Zona"],
+  ["En medio de mis sueños mi corazón despertó y alcancé a oír una voz. Era la voz de mi amado, que estaba a la puerta.", "B", "Cantares 5:2 · TLA (fragmento)"],
+  ["En la oscuridad de la noche busco al amor de mi vida. En la soledad de mi cuarto lo busco y no lo encuentro.", "B", "Cantares 3:1 · TLA"],
+  ["Abrázame, que Dios perdona, pero el tiempo, a ninguno.", "C", "Abrázame muy fuerte · Juan Gabriel"],
+  ["Póngale vida a los años, que es mejor.", "C", "Señora de las cuatro décadas · Ricardo Arjona"],
+  ["Cuando no se tiene hambre, hasta la miel empalaga; cuando se tiene hambre, hasta lo amargo sabe dulce.", "B", "Proverbios 27:7 · TLA"],
+  ["Todos mis amigos y seres queridos se han puesto en mi contra; ¡hasta los niños se burlan de mí!", "B", "Job 19:19 · TLA"],
+  ["Pueden borrar mi memoria, pueden robarme tu historia.", "C", "Nunca te olvidaré · Enrique Iglesias"],
+  ["¡Graba mi nombre en tu corazón! ¡Graba mi imagen en tu brazo! ¡Tan fuerte es el amor como la muerte!", "B", "Cantares 8:6 · TLA (fragmento)"],
+  ["¿Cómo pudiera un ave volar sin alas?", "C", "Vivir sin aire · Maná"],
+  ["Hay quienes se quejan de que “todo tiempo pasado fue mejor”. Pero esas quejas no demuestran mucha sabiduría.", "B", "Eclesiastés 7:10 · TLA"],
+  ["Es una pena, siempre seguirás doliéndome.", "C", "Culpable o no · Luis Miguel"],
+  ["Mis lágrimas son mi pan de día y de noche.", "B", "Salmos 42:3 · NVI (fragmento)"],
+  ["Nos deseábamos desde antes de nacer.", "C", "Las de la intuición · Shakira"],
+  ["Si te he fallado te pido perdón.", "C", "Un siglo sin ti · Chayanne"],
+  ["Palomita amada, no te escondas en las rocas. Muéstrame tu rostro, déjame oír tu voz. ¡Tu voz es dulce! ¡Tu rostro es bello!", "B", "Cantares 2:14 · TLA"],
+  ["Tus ojos me llevan lentamente al Sol.", "C", "Es por ti · Juanes"],
+  ["Dedicarle canciones al corazón afligido es como echarle vinagre a una herida o como andar desabrigado en un día de frío.", "B", "Proverbios 25:20 · NVI"],
+  ["¡Me gustaría que todas mis desgracias pudieran pesarse en una balanza!", "B", "Job 6:2 · TLA"],
+  ["Ojalá pudiera mandar en el alma.", "C", "Amiga mía · Alejandro Sanz"],
+  ["Es más fácil llegar al Sol que a tu corazón.", "C", "Rayando el sol · Maná"],
+  ["Meses enteros he vivido en vano; me han tocado noches de miseria.", "B", "Job 7:3 · NVI"],
+];
+const full = { B: "Biblia", C: "Canción" };
+$("g3").innerHTML = g3.map(([f, k, src], i) => `<tr class="${i % 2 ? "b" : "a"}">
+  <td class="n">${i + 1}</td>
+  <td>“${f}”</td>
+  <td class="ans"><button type="button">Ver</button>
+    <div class="rev"><span class="tag ${k}">${full[k]}</span><div class="src">${src}</div></div></td></tr>`).join("");
+
+/* desempate: [frase, ¿está?, fuente] */
+const g4 = [
+  ["Dios aprieta pero no ahorca.", false, "Refrán popular. No está en la Biblia."],
+  ["Si alguno no quiere trabajar, tampoco coma.", true, "2 Tesalonicenses 3:10"],
+  ["Ayúdate, que yo te ayudaré.", false, "Refrán popular. No está en la Biblia."],
+  ["Alábete el extraño, y no tu propia boca.", true, "Proverbios 27:2"],
+];
+$("g4").innerHTML = g4.map(([f, y, s], i) => `<tr><td class="n">D${i + 1}</td><td>“${f}”</td>
+  <td class="ans"><button type="button">Ver</button><div class="rev"><span class="tag ${y ? "B" : "X"}">${y ? "Sí está" : "No está"}</span><div class="src">${s}</div></div></td></tr>`).join("");
+
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("td.ans button");
+  if (b) b.closest("tr").classList.add("open");
+});
+$("showAll").addEventListener("change", (e) => document.querySelectorAll("#juego3 .wrap").forEach((w) => w.classList.toggle("show", e.target.checked)));
+
+/* marcador */
+const sc = { A: 0, B: 0 };
+store(() => { const s = JSON.parse(localStorage.getItem("cv")); if (s) { sc.A = s.A | 0; sc.B = s.B | 0; $("nameA").value = s.nA || "Equipo A"; $("nameB").value = s.nB || "Equipo B"; } });
+const paint = () => { $("sA").textContent = sc.A; $("sB").textContent = sc.B; store(() => localStorage.setItem("cv", JSON.stringify({ ...sc, nA: $("nameA").value, nB: $("nameB").value }))); };
+document.querySelector(".score").addEventListener("click", (e) => {
+  const b = e.target.closest("button[data-t]"); if (!b) return;
+  sc[b.dataset.t] = Math.max(0, sc[b.dataset.t] + Number(b.dataset.d)); paint();
+});
+["nameA", "nameB"].forEach((id) => $(id).addEventListener("input", paint));
+paint();
+</script>

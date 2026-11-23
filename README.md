@@ -1,9 +1,5 @@
 <div align="center">
 
-<a href="https://git.io/typing-svg">
-  <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=18&duration=3000&pause=800&color=39FF14&background=0D1117&center=true&vCenter=true&width=560&height=120&lines=%24+whoami;ernesto-ascencio;%24+cat+role.txt;Full-Stack+Developer;%24+_" alt="terminal typing" />
-</a>
-
 Fourth-year Software Engineering student at Universidad del Valle de Guatemala,
 currently Full-Stack Developer at **SchoolAid**.
 I enjoy building software and learning something new every day — off the clock you'll find me playing guitar, tennis, football, or a video game.
@@ -13,7 +9,7 @@ I enjoy building software and learning something new every day — off the clock
 ---
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/erneram/erneram/output/snake-dark.svg" alt="snake animation" />
+<img src="./assets/waves.svg" alt="animated ocean waves" />
 </div>
 
 ---

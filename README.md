@@ -8,12 +8,6 @@ I enjoy building software and learning something new every day — off the clock
 
 ---
 
-<div align="center">
-<img src="./assets/waves.svg" alt="animated ocean waves" />
-</div>
-
----
-
 ### 🧑‍💻 My Stack
 
 **Languages**
